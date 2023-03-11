@@ -103,6 +103,9 @@ st.subheader(" Powered by 🦜 LangChain + OpenAI + Streamlit")
 # Ask the user to enter their OpenAI API key
 API_O = st.sidebar.text_input("API-KEY", type="password")
 
+# Session state storage would be ideal
+if not API_O:
+    st.stop()
 # Load the ConversationChain object
 chain = load_conversation_chain(model=MODEL,k=K)     
 
@@ -125,7 +128,8 @@ with st.expander("Conversation", expanded=True):
         st.success(st.session_state["generated"][i], icon="🤖")
         download_str.append(st.session_state["past"][i])
         download_str.append(st.session_state["generated"][i])
-
+    
+    # Can throw error - requires fix
     download_str = '\n'.join(download_str)
     if download_str:
         st.download_button('Download',download_str)
