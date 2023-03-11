@@ -14,36 +14,6 @@ from langchain.llms import OpenAI
 
 # Set Streamlit page configuration
 st.set_page_config(page_title='🧠MemoryBot🤖', layout='wide')
-
-def load_conversation_chain(model='gpt-3.5-turbo', k=100):
-    """
-    Load the ConversationChain object with the specified configuration.
-
-    Parameters:
-        - model (str): The name of the OpenAI model to use
-        - k (int): The number of prompts to consider
-
-    Returns:
-        (ConversationChain): An instance of the ConversationChain object
-    """
-    # Create an OpenAI instance
-    llm = OpenAI(temperature=0,
-                openai_api_key=API_O, 
-                model_name=model, 
-                verbose=False)  
-    
-    # Create a ConversationEntityMemory object if not already created
-    if 'entity_memory' not in st.session_state:
-        st.session_state.entity_memory = ConversationEntityMemory(llm=llm, k=k)
-    
-    # Create the ConversationChain object with the specified configuration
-    Conversation = ConversationChain(
-        llm=llm, 
-        prompt=ENTITY_MEMORY_CONVERSATION_TEMPLATE,
-        memory=st.session_state.entity_memory
-    )  
-    return Conversation
-
 # Initialize session states
 if "generated" not in st.session_state:
     st.session_state["generated"] = []
@@ -104,10 +74,28 @@ st.subheader(" Powered by 🦜 LangChain + OpenAI + Streamlit")
 API_O = st.sidebar.text_input("API-KEY", type="password")
 
 # Session state storage would be ideal
-if not API_O:
+if API_O:
+    # Create an OpenAI instance
+    llm = OpenAI(temperature=0,
+                openai_api_key=API_O, 
+                model_name=MODEL, 
+                verbose=False) 
+
+
+    # Create a ConversationEntityMemory object if not already created
+    if 'entity_memory' not in st.session_state:
+            st.session_state.entity_memory = ConversationEntityMemory(llm=llm, k=K )
+        
+        # Create the ConversationChain object with the specified configuration
+    Conversation = ConversationChain(
+            llm=llm, 
+            prompt=ENTITY_MEMORY_CONVERSATION_TEMPLATE,
+            memory=st.session_state.entity_memory
+        )  
+else:
     st.sidebar.warning('API key required to try this app.The API key is not stored in any form.')
-# Load the ConversationChain object
-chain = load_conversation_chain(model=MODEL,k=K)     
+    # st.stop()
+
 
 # Add a button to start a new chat
 st.sidebar.button("New Chat", on_click = new_chat, type='primary')
@@ -117,7 +105,7 @@ user_input = get_text()
 
 # Generate the output using the ConversationChain object and the user input, and add the input/output to the session
 if user_input:
-    output = chain.run(input=user_input)  
+    output = Conversation.run(input=user_input)  
     st.session_state.past.append(user_input)  
     st.session_state.generated.append(output)  
 
