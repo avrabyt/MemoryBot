@@ -121,6 +121,8 @@ if user_input:
     st.session_state.past.append(user_input)  
     st.session_state.generated.append(output)  
 
+# Allow to download as well
+download_str = []
 # Display the conversation history using an expander, and allow the user to download it
 with st.expander("Conversation", expanded=True):
     for i in range(len(st.session_state['generated'])-1, -1, -1):
