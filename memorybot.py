@@ -103,10 +103,9 @@ st.subheader(" Powered by 🦜 LangChain + OpenAI + Streamlit")
 # Ask the user to enter their OpenAI API key
 API_O = st.sidebar.text_input("API-KEY", type="password")
 
-# Not the ideal way - but will work for time being
+# Session state storage would be ideal
 if not API_O:
     st.sidebar.warning('API key required to try this app.The API key is not stored in any form.')
-
 # Load the ConversationChain object
 chain = load_conversation_chain(model=MODEL,k=K)     
 
