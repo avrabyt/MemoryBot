@@ -13,6 +13,16 @@ A typical chatbot which can,
 - Save the conversation
 - Download the conversation
 
+# Similar to:
+
+Personal MemoryBot : Memory 🧠  to your Personal ChatBot 🤖|  LangChainAI and Databutton 
+
+Demo App - [here](https://next.databutton.com/v/lgzxq112/Personalised_Memory_Bot)
+
+Video - [here](https://youtu.be/daMNGGPJkEE)
+
+Blog - [here](https://medium.com/@avra42/how-to-build-a-personalized-pdf-chat-bot-with-conversational-memory-965280c160f8)
+
 # Resources
 
 [Open AI](https://openai.com/) |
